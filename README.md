@@ -1,8 +1,15 @@
-# MarketMaster
+# TradersTavern
 
-A sophisticated Old School RuneScape flipping plugin that combines technical analysis with real-time market data to provide intelligent trading suggestions.
+Welcome to the Tavern! A cozy place for OSRS traders to gather, share insights, and find high-probability profitable flips. This RuneLite plugin combines advanced market analysis with a user-friendly interface to help you make informed trading decisions.
 
 ## Features
+
+### Smart Suggestions
+- High probability flips
+- Real-time market analysis
+- Volume-weighted recommendations
+- Risk-adjusted returns
+- Market sentiment tracking
 
 ### Technical Analysis
 - MACD (Moving Average Convergence Divergence)
@@ -11,41 +18,47 @@ A sophisticated Old School RuneScape flipping plugin that combines technical ana
 - Volume analysis
 - Price trend detection
 
-### Smart Suggestions
-- Risk-adjusted recommendations
-- Multi-timeframe analysis
-- Confidence scoring
-- Volume-weighted suggestions
-- Market sentiment analysis
-
-### Advanced UI
+### User-Friendly Interface
+- Clean, intuitive design
 - Interactive price charts
-- Technical indicator overlays
 - Risk level customization
-- Time frame selection
-- Bookmark system
+- One-click trading
+- Visual indicators
 
-### Real-time Data
+### Market Insights
 - Live price updates
-- Volume tracking
-- Market depth analysis
-- Trading activity monitoring
-- Historical data analysis
-
-## Installation
-
-1. Open RuneLite
-2. Go to Plugin Hub
-3. Search for "MarketMaster"
-4. Click Install
+- Trading volume analysis
+- Market depth tracking
+- Historical trends
+- Community sentiment
 
 ## Quick Start
 
+1. Open RuneLite
+2. Go to Plugin Hub
+3. Search for "TradersTavern"
+4. Click Install
+
+## Using the Tavern
+
+### Finding Flips
 1. Open Grand Exchange
-2. Select your preferred risk level
-3. Choose time frame
-4. View suggestions
-5. Use technical analysis to make informed decisions
+2. View suggested flips
+3. Check confidence scores
+4. Review market analysis
+5. Make informed trades
+
+### Risk Levels
+- **Safer**: Low-risk, stable items
+- **Safe**: Good volume, minor swings
+- **Balanced**: Mixed risk, good returns
+- **Risky**: Higher margins, more volatile
+- **Riskier**: Speculative, high rewards
+
+### Time Frames
+- **Short**: Quick trades (1 hour)
+- **Medium**: Balanced trades (6 hours)
+- **Long**: Patient trades (24 hours)
 
 ## Documentation
 
