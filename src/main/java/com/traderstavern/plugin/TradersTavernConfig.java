@@ -4,8 +4,18 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("traderstavern")
+@ConfigGroup(TradersTavernConfig.CONFIG_GROUP)
 public interface TradersTavernConfig extends Config {
+    String CONFIG_GROUP = "traderstavern";
+    
+    enum RiskLevel {
+        LOW, MEDIUM, HIGH
+    }
+    
+    enum TimeFrame {
+        M1, M5, M15, M30, H1, H4, D1
+    }
+    
     @ConfigItem(
         keyName = "riskLevel",
         name = "Risk Level",
@@ -13,9 +23,9 @@ public interface TradersTavernConfig extends Config {
         position = 1
     )
     default RiskLevel riskLevel() {
-        return RiskLevel.BALANCED;
+        return RiskLevel.MEDIUM;
     }
-
+    
     @ConfigItem(
         keyName = "timeFrame",
         name = "Time Frame",
@@ -23,14 +33,66 @@ public interface TradersTavernConfig extends Config {
         position = 2
     )
     default TimeFrame timeFrame() {
-        return TimeFrame.MEDIUM;
+        return TimeFrame.H1;
     }
-
-    enum RiskLevel {
-        SAFER, SAFE, BALANCED, RISKY, RISKIER
+    
+    @ConfigItem(
+        keyName = "autoRefreshEnabled",
+        name = "Auto Refresh",
+        description = "Automatically refresh data",
+        position = 3
+    )
+    default boolean autoRefreshEnabled() {
+        return true;
     }
-
-    enum TimeFrame {
-        SHORT, MEDIUM, LONG
+    
+    @ConfigItem(
+        keyName = "showTooltips",
+        name = "Show Tooltips",
+        description = "Show helpful tooltips",
+        position = 4
+    )
+    default boolean showTooltips() {
+        return true;
+    }
+    
+    @ConfigItem(
+        keyName = "showVolume",
+        name = "Show Volume",
+        description = "Show volume information",
+        position = 5
+    )
+    default boolean showVolume() {
+        return true;
+    }
+    
+    @ConfigItem(
+        keyName = "showIndicators",
+        name = "Show Indicators",
+        description = "Show technical indicators",
+        position = 6
+    )
+    default boolean showIndicators() {
+        return true;
+    }
+    
+    @ConfigItem(
+        keyName = "notificationsEnabled",
+        name = "Enable Notifications",
+        description = "Show price alerts",
+        position = 7
+    )
+    default boolean notificationsEnabled() {
+        return true;
+    }
+    
+    @ConfigItem(
+        keyName = "soundAlertsEnabled",
+        name = "Sound Alerts",
+        description = "Play sound on alerts",
+        position = 8
+    )
+    default boolean soundAlertsEnabled() {
+        return true;
     }
 }

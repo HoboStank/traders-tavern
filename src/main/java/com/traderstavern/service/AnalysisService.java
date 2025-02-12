@@ -24,6 +24,11 @@ public class AnalysisService {
         this.storageService = storageService;
     }
     
+    public void updateAnalysis(TradersTavernConfig.RiskLevel risk, TradersTavernConfig.TimeFrame timeFrame) {
+        log.debug("Updating analysis with risk={}, timeFrame={}", risk, timeFrame);
+        // TODO: Implement full analysis logic
+    }
+    
     public TechnicalIndicators analyze(int itemId, List<PriceData> priceHistory) {
         List<Double> prices = priceHistory.stream()
             .map(p -> (double) p.getHigh())

@@ -118,7 +118,7 @@ public class TradersTavernPlugin extends Plugin {
     public void onGrandExchangeOfferChanged(GrandExchangeOfferChanged event) {
         // Update price tracking and analysis
         priceService.updatePrice(event.getOffer());
-        panel.updateDisplay();
+        panel.refresh();
     }
 
     private void loadSavedData() {
@@ -126,6 +126,6 @@ public class TradersTavernPlugin extends Plugin {
         storageService.loadPriceHistory().forEach((itemId, history) -> {
             priceService.updatePriceHistory(itemId, history);
         });
-        panel.updateDisplay();
+        panel.refresh();
     }
 }
