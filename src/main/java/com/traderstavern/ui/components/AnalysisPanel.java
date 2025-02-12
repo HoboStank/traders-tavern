@@ -4,7 +4,7 @@ import com.traderstavern.plugin.TradersTavernConfig;
 import com.traderstavern.service.AnalysisService;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.components.ComboBoxListRenderer;
+// Custom imports
 
 import javax.inject.Inject;
 import javax.swing.*;
@@ -32,14 +32,14 @@ public class AnalysisPanel extends BasePanel {
         
         // Create risk selector
         riskSelector = new JComboBox<>(TradersTavernConfig.RiskLevel.values());
-        riskSelector.setRenderer(new ComboBoxListRenderer<>());
+        riskSelector.setRenderer(new CustomComboBoxRenderer());
         riskSelector.setForeground(Color.WHITE);
         riskSelector.setSelectedItem(config.riskLevel());
         riskSelector.addActionListener(e -> updateAnalysis());
         
         // Create time frame selector
         timeFrameSelector = new JComboBox<>(TradersTavernConfig.TimeFrame.values());
-        timeFrameSelector.setRenderer(new ComboBoxListRenderer<>());
+        timeFrameSelector.setRenderer(new CustomComboBoxRenderer());
         timeFrameSelector.setForeground(Color.WHITE);
         timeFrameSelector.setSelectedItem(config.timeFrame());
         timeFrameSelector.addActionListener(e -> updateAnalysis());
