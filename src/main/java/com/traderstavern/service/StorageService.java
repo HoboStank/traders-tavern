@@ -83,7 +83,7 @@ public class StorageService {
         }
     }
     
-    private void loadPriceHistory() {
+    public Map<Integer, List<PriceData>> loadPriceHistory() {
         try {
             File[] files = dataPath.toFile().listFiles((dir, name) -> 
                 name.startsWith("price_") && name.endsWith(".json"));
@@ -106,6 +106,7 @@ public class StorageService {
         } catch (Exception e) {
             log.error("Failed to load price history", e);
         }
+        return new HashMap<>(priceCache);
     }
     
     // Watched Items Management

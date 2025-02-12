@@ -85,4 +85,12 @@ public class TradersTavernPanel extends PluginPanel {
         // Trigger reanalysis of all monitored items
         monitorService.updateAllItems();
     }
+
+    public void updateDisplay() {
+        SwingUtilities.invokeLater(() -> {
+            updateAnalysis();
+            revalidate();
+            repaint();
+        });
+    }
 }
