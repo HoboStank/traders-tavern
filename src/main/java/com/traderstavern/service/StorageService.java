@@ -2,6 +2,8 @@ package com.traderstavern.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.traderstavern.analysis.MarketSentiment;
+import com.traderstavern.analysis.TechnicalIndicators;
 import com.traderstavern.model.PriceAlert;
 import com.traderstavern.model.PriceData;
 import lombok.extern.slf4j.Slf4j;

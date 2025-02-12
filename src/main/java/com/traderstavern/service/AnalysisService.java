@@ -28,7 +28,7 @@ public class AnalysisService {
         log.debug("Updating analysis with risk={}, timeFrame={}", risk, timeFrame);
         
         // Get all monitored items
-        Set<Integer> monitoredItems = storageService.getMonitoredItems();
+        Set<Integer> monitoredItems = storageService.getWatchedItems();
         
         // Analyze each item
         for (int itemId : monitoredItems) {
