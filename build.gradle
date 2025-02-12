@@ -22,8 +22,16 @@ def runeLiteVersion = '1.10.13'
 
 dependencies {
     compileOnly group: 'net.runelite', name: 'client', version: runeLiteVersion
+    runtimeOnly group: 'net.runelite', name: 'client', version: runeLiteVersion
+    
     compileOnly group: 'net.runelite', name: 'runelite-api', version: runeLiteVersion
+    runtimeOnly group: 'net.runelite', name: 'runelite-api', version: runeLiteVersion
+    
     compileOnly group: 'net.runelite', name: 'jshell', version: runeLiteVersion
+    runtimeOnly group: 'net.runelite', name: 'jshell', version: runeLiteVersion
+    
+    compileOnly group: 'net.runelite', name: 'runelite-launcher', version: runeLiteVersion
+    runtimeOnly group: 'net.runelite', name: 'runelite-launcher', version: runeLiteVersion
     
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
