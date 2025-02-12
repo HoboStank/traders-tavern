@@ -62,7 +62,7 @@ public class TechnicalOverlayPanel extends BasePanel {
             macdLabel.setText(String.format("%.2f", indicators.getMacd().getValue()));
             rsiLabel.setText(String.format("%.1f", indicators.getRsi().getValue()));
             rocLabel.setText(String.format("%.2f%%", indicators.getRoc().getValue()));
-            volumeLabel.setText(formatVolume(indicators.getVolumeMetrics().getCurrentVolume()));
+            volumeLabel.setText(formatVolume((long) indicators.getVolumeMetrics().getCurrentVolume()));
             trendLabel.setText(indicators.getTrendMetrics().getTrend().name());
             
             updateColors(indicators);
