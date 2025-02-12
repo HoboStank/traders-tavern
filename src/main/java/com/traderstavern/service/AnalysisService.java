@@ -8,8 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.time.Duration;
-import java.time.Instant;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,7 +26,25 @@ public class AnalysisService {
     
     public void updateAnalysis(TradersTavernConfig.RiskLevel risk, TradersTavernConfig.TimeFrame timeFrame) {
         log.debug("Updating analysis with risk={}, timeFrame={}", risk, timeFrame);
-        // TODO: Implement full analysis logic
+        
+        // Get all monitored items
+        Set<Integer> monitoredItems = storageService.getMonitoredItems();
+        
+        // Analyze each item
+        for (int itemId : monitoredItems) {
+            List<PriceData> history = storageService.getPriceHistory(itemId);
+            if (history.isEmpty()) continue;
+            
+            // Calculate technical indicators
+            TechnicalIndicators indicators = analyze(itemId, history);
+            if (indicators == null) continue;
+            
+            // Calculate market sentiment
+            MarketSentiment sentiment = analyzeSentiment(itemId, history);
+            
+            // Store analysis results
+            storageService.saveAnalysis(itemId, indicators, sentiment);
+        }
     }
     
     public TechnicalIndicators analyze(int itemId, List<PriceData> priceHistory) {
@@ -99,7 +116,7 @@ public class AnalysisService {
         if (history.isEmpty()) return List.of();
         
         List<Double> aggregated = new ArrayList<>();
-        long interval = timeFrame.getSeconds() * 1000; // Convert to milliseconds
+        long interval = timeFrame.getSeconds() * 1000L; // Convert to milliseconds
         long currentTime = history.get(0).getHighTimestamp();
         List<Double> currentPrices = new ArrayList<>();
         

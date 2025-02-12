@@ -159,6 +159,35 @@ public class StorageService {
         }
     }
     
+    // Analysis Management
+    
+    public void saveAnalysis(int itemId, TechnicalIndicators indicators, MarketSentiment sentiment) {
+        try {
+            Path filePath = dataPath.resolve("analysis_" + itemId + ".json");
+            Map<String, Object> analysis = new HashMap<>();
+            analysis.put("itemId", itemId);
+            analysis.put("indicators", indicators);
+            analysis.put("sentiment", sentiment);
+            analysis.put("timestamp", System.currentTimeMillis());
+            mapper.writeValue(filePath.toFile(), analysis);
+        } catch (IOException e) {
+            log.error("Failed to save analysis for item {}", itemId, e);
+        }
+    }
+    
+    public Map<String, Object> getAnalysis(int itemId) {
+        try {
+            Path filePath = dataPath.resolve("analysis_" + itemId + ".json");
+            if (Files.exists(filePath)) {
+                return mapper.readValue(filePath.toFile(), 
+                    new TypeReference<Map<String, Object>>() {});
+            }
+        } catch (IOException e) {
+            log.error("Failed to load analysis for item {}", itemId, e);
+        }
+        return new HashMap<>();
+    }
+    
     // Data Cleanup
     
     public void cleanupOldData() {
