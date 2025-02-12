@@ -17,10 +17,10 @@
 - [x] Trend detection
 
 ### Basic Features
-- [ ] Price monitoring
-- [ ] Simple suggestions
-- [ ] Basic UI
-- [ ] Settings panel
+- [x] Price monitoring
+- [x] Simple suggestions
+- [x] Basic UI
+- [x] Settings panel
 - [ ] Data persistence
 
 ## Phase 2: Advanced Features (Q3 2024)
