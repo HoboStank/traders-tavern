@@ -3,6 +3,7 @@ package com.traderstavern.analysis;
 import lombok.Builder;
 import lombok.Data;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import com.traderstavern.analysis.pattern.PricePattern;
 
 import java.util.List;
 

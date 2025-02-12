@@ -1,6 +1,7 @@
 package com.traderstavern.service;
 
 import com.traderstavern.analysis.TechnicalIndicators;
+import com.traderstavern.model.PriceAlert;
 import com.traderstavern.model.PriceData;
 import com.traderstavern.model.TradingSuggestion;
 import com.traderstavern.plugin.TradersTavernConfig;
