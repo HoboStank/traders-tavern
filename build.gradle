@@ -13,12 +13,17 @@ repositories {
     maven {
         url = 'https://repo.runelite.net'
     }
+    maven {
+        url = 'https://raw.githubusercontent.com/open-osrs/hosting/master'
+    }
 }
 
 def runeLiteVersion = '1.10.13'
 
 dependencies {
     compileOnly group: 'net.runelite', name: 'client', version: runeLiteVersion
+    compileOnly group: 'net.runelite', name: 'runelite-api', version: runeLiteVersion
+    compileOnly group: 'net.runelite', name: 'jshell', version: runeLiteVersion
     
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
@@ -31,6 +36,7 @@ dependencies {
     
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
     testImplementation group: 'net.runelite', name: 'client', version: runeLiteVersion
+    testImplementation group: 'net.runelite', name: 'runelite-api', version: runeLiteVersion
     testImplementation 'org.mockito:mockito-core:5.10.0'
 }
 
@@ -74,6 +80,6 @@ application {
         '-ea',
         '-Xmx512m',
         '-Drunelite.pluginhub.version=' + runeLiteVersion,
-        '--developer-mode'
+        '-Drunelite.developer.mode=true'
     ]
 }
