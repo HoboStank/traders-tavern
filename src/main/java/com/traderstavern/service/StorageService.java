@@ -32,11 +32,13 @@ public class StorageService {
     private final ConfigManager configManager;
     private final ObjectMapper mapper;
     private final Map<Integer, List<PriceData>> priceCache;
+    private final DatabaseManager databaseManager;
     private final Path dataPath;
     
     @Inject
-    public StorageService(ConfigManager configManager) {
+    public StorageService(ConfigManager configManager, DatabaseManager databaseManager) {
         this.configManager = configManager;
+        this.databaseManager = databaseManager;
         this.mapper = new ObjectMapper();
         this.priceCache = new ConcurrentHashMap<>();
         this.dataPath = Path.of(DATA_DIR);
@@ -56,6 +58,10 @@ public class StorageService {
     // Price History Management
     
     public void savePriceData(int itemId, PriceData price) {
+        // Save to database
+        databaseManager.savePriceData(itemId, price);
+        
+        // Update cache
         List<PriceData> history = priceCache.computeIfAbsent(itemId, 
             k -> new ArrayList<>());
         history.add(price);
@@ -65,12 +71,19 @@ public class StorageService {
             history = history.subList(history.size() - 100, history.size());
             priceCache.put(itemId, history);
         }
-        
-        savePriceHistory(itemId);
     }
     
     public List<PriceData> getPriceHistory(int itemId) {
-        return priceCache.getOrDefault(itemId, new ArrayList<>());
+        // Try cache first
+        List<PriceData> cached = priceCache.get(itemId);
+        if (cached != null) {
+            return cached;
+        }
+        
+        // Load from database
+        List<PriceData> history = databaseManager.getPriceHistory(itemId);
+        priceCache.put(itemId, history);
+        return history;
     }
     
     private void savePriceHistory(int itemId) {
