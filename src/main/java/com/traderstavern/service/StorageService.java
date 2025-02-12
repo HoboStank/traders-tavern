@@ -111,7 +111,7 @@ public class StorageService {
                         int itemId = Integer.parseInt(
                             fileName.substring(6, fileName.length() - 5));
                         List<PriceData> history = mapper.readValue(file,
-                            new TypeReference<List<PriceData>>() {});
+                            new TypeReference<>() {});
                         priceCache.put(itemId, history);
                     } catch (Exception e) {
                         log.error("Failed to load price history from {}", 
@@ -134,7 +134,7 @@ public class StorageService {
         }
         
         try {
-            return mapper.readValue(json, new TypeReference<Set<Integer>>() {});
+            return mapper.readValue(json, new TypeReference<>() {});
         } catch (IOException e) {
             log.error("Failed to load watched items", e);
             return new HashSet<>();
@@ -159,7 +159,7 @@ public class StorageService {
         }
         
         try {
-            return mapper.readValue(json, new TypeReference<List<PriceAlert>>() {});
+            return mapper.readValue(json, new TypeReference<>() {});
         } catch (IOException e) {
             log.error("Failed to load alerts", e);
             return new ArrayList<>();
@@ -196,7 +196,7 @@ public class StorageService {
             Path filePath = dataPath.resolve("analysis_" + itemId + ".json");
             if (Files.exists(filePath)) {
                 return mapper.readValue(filePath.toFile(), 
-                    new TypeReference<Map<String, Object>>() {});
+                    new TypeReference<>() {});
             }
         } catch (IOException e) {
             log.error("Failed to load analysis for item {}", itemId, e);

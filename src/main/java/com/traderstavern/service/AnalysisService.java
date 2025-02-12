@@ -47,6 +47,10 @@ public class AnalysisService {
         }
     }
     
+    public Map<String, Object> getAnalysis(int itemId) {
+        return storageService.getAnalysis(itemId);
+    }
+    
     public TechnicalIndicators analyze(int itemId, List<PriceData> priceHistory) {
         List<Double> prices = priceHistory.stream()
             .map(p -> (double) p.getHigh())

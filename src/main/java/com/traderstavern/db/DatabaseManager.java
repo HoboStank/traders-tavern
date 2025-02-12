@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,6 +19,11 @@ public class DatabaseManager {
     private static final String DB_DIR = System.getProperty("user.home") + "/.runelite/traderstavern";
     private static final String DB_URL = "jdbc:sqlite:" + DB_DIR + "/" + DB_NAME;
     private Connection connection;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor(r -> {
+        Thread thread = new Thread(r, "DatabaseThread");
+        thread.setDaemon(true);
+        return thread;
+    });
     
     @Inject
     public DatabaseManager() {
@@ -71,27 +78,29 @@ public class DatabaseManager {
     }
     
     public void savePriceData(int itemId, PriceData price) {
-        String sql = """
-            INSERT INTO price_history (item_id, high, low, high_timestamp, low_timestamp)
-            VALUES (?, ?, ?, ?, ?)
-        """;
-        
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, itemId);
-            pstmt.setInt(2, price.getHigh());
-            pstmt.setInt(3, price.getLow());
-            pstmt.setLong(4, price.getHighTimestamp());
-            pstmt.setLong(5, price.getLowTimestamp());
-            pstmt.executeUpdate();
-            connection.commit();
-        } catch (SQLException e) {
-            log.error("Failed to save price data for item {}", itemId, e);
-            try {
-                connection.rollback();
-            } catch (SQLException re) {
-                log.error("Failed to rollback price data save", re);
+        executor.submit(() -> {
+            String sql = """
+                INSERT INTO price_history (item_id, high, low, high_timestamp, low_timestamp)
+                VALUES (?, ?, ?, ?, ?)
+            """;
+            
+            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                pstmt.setInt(1, itemId);
+                pstmt.setInt(2, price.getHigh());
+                pstmt.setInt(3, price.getLow());
+                pstmt.setLong(4, price.getHighTimestamp());
+                pstmt.setLong(5, price.getLowTimestamp());
+                pstmt.executeUpdate();
+                connection.commit();
+            } catch (SQLException e) {
+                log.error("Failed to save price data for item {}", itemId, e);
+                try {
+                    connection.rollback();
+                } catch (SQLException re) {
+                    log.error("Failed to rollback price data save", re);
+                }
             }
-        }
+        });
     }
     
     public List<PriceData> getPriceHistory(int itemId) {
