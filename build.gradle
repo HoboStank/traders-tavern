@@ -30,9 +30,6 @@ dependencies {
     compileOnly group: 'net.runelite', name: 'jshell', version: runeLiteVersion
     runtimeOnly group: 'net.runelite', name: 'jshell', version: runeLiteVersion
     
-    compileOnly group: 'net.runelite', name: 'runelite-launcher', version: runeLiteVersion
-    runtimeOnly group: 'net.runelite', name: 'runelite-launcher', version: runeLiteVersion
-    
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
     
@@ -57,21 +54,6 @@ tasks.withType(JavaCompile) {
     options.release = 17 // RuneLite supports Java 17+
 }
 
-tasks.withType(Jar) {
-    manifest {
-        attributes 'Main-Class': 'com.traderstavern.plugin.TradersTavernPlugin'
-    }
-}
-
-shadowJar {
-    archiveClassifier.set('')
-    dependencies {
-        exclude(dependency('net.runelite:client'))
-    }
-}
-
-tasks.build.dependsOn tasks.shadowJar
-
 // RuneLite plugin properties
 ext {
     runeLiteVersion = '1.10.13'
@@ -81,13 +63,15 @@ ext {
     pluginClass = 'com.traderstavern.plugin.TradersTavernPlugin'
 }
 
-// Application configuration
-application {
-    mainClass = 'net.runelite.client.RuneLite'
-    applicationDefaultJvmArgs = [
-        '-ea',
-        '-Xmx512m',
-        '-Drunelite.pluginhub.version=' + runeLiteVersion,
-        '-Drunelite.developer.mode=true'
-    ]
+jar {
+    manifest {
+        attributes(
+            'Plugin-Version': project.version,
+            'Plugin-Id': 'traders-tavern',
+            'Plugin-Provider': 'openhands',
+            'Plugin-Description': project.ext.pluginDescription,
+            'Plugin-License': 'BSD 2-Clause License',
+            'Plugin-Class': project.ext.pluginClass
+        )
+    }
 }
