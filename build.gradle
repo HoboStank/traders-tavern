@@ -36,3 +36,9 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
     options.release.set(17)  // Using Java 17 for modern language features
 }
+
+task run(type: JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'com.traderstavern.TradersTavernPluginTest'
+    args = project.hasProperty('args') ? [project.args] : []
+}
