@@ -3,6 +3,7 @@ package com.traderstavern.service;
 import com.traderstavern.analysis.*;
 import com.traderstavern.analysis.pattern.PricePattern;
 import com.traderstavern.model.PriceData;
+import com.traderstavern.plugin.TradersTavernConfig;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
