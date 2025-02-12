@@ -12,6 +12,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.util.ImageUtil;
+import com.traderstavern.ui.TradersTavernPanel;
+
+import java.awt.image.BufferedImage;
 
 @Slf4j
 @PluginDescriptor(
@@ -29,15 +33,29 @@ public class TradersTavernPlugin extends Plugin {
     @Inject
     private ClientToolbar clientToolbar;
 
+    @Inject
+    private TradersTavernPanel panel;
+
     private NavigationButton navButton;
 
     @Override
     protected void startUp() {
+        final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "/tavern_icon.png");
+        
+        navButton = NavigationButton.builder()
+            .tooltip("Traders Tavern")
+            .icon(icon)
+            .priority(5)
+            .panel(panel)
+            .build();
+        
+        clientToolbar.addNavigation(navButton);
         log.info("Traders Tavern started!");
     }
 
     @Override
     protected void shutDown() {
+        clientToolbar.removeNavigation(navButton);
         log.info("Traders Tavern stopped!");
     }
 

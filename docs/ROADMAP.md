@@ -7,7 +7,7 @@
 - [x] Basic UI framework
 - [x] Data models
 - [x] API integration
-- [ ] Price tracking
+- [x] Price tracking
 
 ### Technical Analysis Engine
 - [ ] MACD implementation
