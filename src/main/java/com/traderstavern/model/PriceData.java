@@ -1,18 +1,25 @@
 package com.traderstavern.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PriceData {
-    private final int high;
-    private final int low;
+    private int itemId;
+    private int high;
+    private int low;
     
     @JsonProperty("highTime")
-    private final long highTimestamp;
+    private long highTimestamp;
     
     @JsonProperty("lowTime")
-    private final long lowTimestamp;
+    private long lowTimestamp;
     
     public int getSpread() {
         return high - low;
@@ -20,5 +27,9 @@ public class PriceData {
     
     public double getMargin() {
         return low > 0 ? (high - low) / (double) low : 0;
+    }
+    
+    public double getMarginPercent() {
+        return getMargin() * 100;
     }
 }
