@@ -28,7 +28,7 @@ public class PriceChartPanel extends BasePanel {
     private JFreeChart chart;
     private ChartPanel chartPanel;
     
-    public ChartPanel() {
+    public PriceChartPanel() {
         addHeader("Price Chart");
         
         chartContainer = new JPanel(new BorderLayout());
