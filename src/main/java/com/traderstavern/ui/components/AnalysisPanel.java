@@ -17,7 +17,7 @@ public class AnalysisPanel extends BasePanel {
     
     private final JComboBox<TradersTavernConfig.RiskLevel> riskSelector;
     private final JComboBox<TradersTavernConfig.TimeFrame> timeFrameSelector;
-    private final ChartPanel chartPanel;
+    private final PriceChartPanel chartPanel;
     private final TechnicalOverlayPanel overlayPanel;
     
     @Inject
@@ -52,7 +52,7 @@ public class AnalysisPanel extends BasePanel {
         selectorsPanel.add(timeFrameSelector);
         
         // Create chart and overlay panels
-        chartPanel = new ChartPanel();
+        chartPanel = new PriceChartPanel();
         overlayPanel = new TechnicalOverlayPanel();
         
         // Create main content panel

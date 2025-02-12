@@ -81,6 +81,11 @@ public class MACD {
         return result;
     }
     
+    public double getValue() {
+        if (macdLine.length == 0) return 0;
+        return macdLine[macdLine.length - 1];
+    }
+    
     public double getStrength() {
         if (macdLine.length == 0) return 0;
         

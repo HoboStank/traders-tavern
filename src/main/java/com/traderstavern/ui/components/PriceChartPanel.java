@@ -19,10 +19,11 @@ import org.jfree.data.xy.OHLCDataset;
 import javax.swing.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
-public class ChartPanel extends BasePanel {
+public class PriceChartPanel extends BasePanel {
     private final JPanel chartContainer;
     private JFreeChart chart;
     private ChartPanel chartPanel;

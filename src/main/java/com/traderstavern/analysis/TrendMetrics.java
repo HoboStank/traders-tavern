@@ -22,6 +22,10 @@ public class TrendMetrics {
         STRONG_DOWNTREND
     }
     
+    public TrendType getTrend() {
+        return type;
+    }
+    
     public static TrendMetrics calculate(List<Double> prices) {
         if (prices.size() < 2) {
             throw new IllegalArgumentException("Not enough price data for trend analysis");

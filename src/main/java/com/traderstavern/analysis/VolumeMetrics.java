@@ -39,6 +39,11 @@ public class VolumeMetrics {
             .build();
     }
     
+    public double getCurrentVolume() {
+        if (volumeHistory.length == 0) return 0;
+        return volumeHistory[volumeHistory.length - 1];
+    }
+    
     public double getStrength() {
         if (volumeHistory.length == 0) return 0;
         
