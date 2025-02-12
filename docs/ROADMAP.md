@@ -4,9 +4,9 @@
 
 ### Core Infrastructure
 - [x] Project setup
-- [ ] Basic UI framework
-- [ ] Data models
-- [ ] API integration
+- [x] Basic UI framework
+- [x] Data models
+- [x] API integration
 - [ ] Price tracking
 
 ### Technical Analysis Engine
