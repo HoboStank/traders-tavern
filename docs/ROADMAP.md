@@ -10,11 +10,11 @@
 - [x] Price tracking
 
 ### Technical Analysis Engine
-- [ ] MACD implementation
-- [ ] RSI calculation
-- [ ] ROC analysis
-- [ ] Volume tracking
-- [ ] Trend detection
+- [x] MACD implementation
+- [x] RSI calculation
+- [x] ROC analysis
+- [x] Volume tracking
+- [x] Trend detection
 
 ### Basic Features
 - [ ] Price monitoring
