@@ -80,6 +80,7 @@ public class TradersTavernPlugin extends Plugin {
 
     @Override
     protected void startUp() {
+        log.info("Traders Tavern plugin starting up...");
         panel = injector.getInstance(TradersTavernPanel.class);
 
         final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "/tavern_icon.png");
