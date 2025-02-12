@@ -50,8 +50,9 @@ public class PriceService {
         storageService.savePriceData(offer.getItemId(), priceData);
     }
 
-    public void updatePriceHistory(int itemId, List<PriceData> history) {
-        history.forEach(price -> {
+    public synchronized void updatePriceHistory(int itemId, List<PriceData> history) {
+        List<PriceData> safeHistory = new ArrayList<>(history);
+        safeHistory.forEach(price -> {
             priceCache.put(itemId, price);
             storageService.savePriceData(itemId, price);
         });
