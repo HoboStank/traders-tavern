@@ -35,6 +35,9 @@ public class TradersTavernPlugin extends Plugin {
 
     @Inject
     private TradersTavernPanel panel;
+    
+    @Inject
+    private StorageService storageService;
 
     private NavigationButton navButton;
 
@@ -56,6 +59,7 @@ public class TradersTavernPlugin extends Plugin {
     @Override
     protected void shutDown() {
         clientToolbar.removeNavigation(navButton);
+        storageService.cleanupOldData();
         log.info("Traders Tavern stopped!");
     }
 

@@ -24,20 +24,32 @@ public class PriceMonitorService {
     private final PriceService priceService;
     private final AnalysisService analysisService;
     private final Map<Integer, PriceData> lastPrices;
-    private final Map<Integer, List<PriceData>> priceHistory;
     private final Map<Integer, List<PriceAlert>> priceAlerts;
     private final ScheduledExecutorService scheduler;
     private final List<PriceUpdateListener> listeners;
+    private final StorageService storageService;
     
     @Inject
-    public PriceMonitorService(PriceService priceService, AnalysisService analysisService) {
+    public PriceMonitorService(
+            PriceService priceService,
+            AnalysisService analysisService,
+            StorageService storageService) {
         this.priceService = priceService;
         this.analysisService = analysisService;
+        this.storageService = storageService;
         this.lastPrices = new ConcurrentHashMap<>();
-        this.priceHistory = new ConcurrentHashMap<>();
         this.priceAlerts = new ConcurrentHashMap<>();
         this.scheduler = Executors.newSingleThreadScheduledExecutor();
         this.listeners = new CopyOnWriteArrayList<>();
+        
+        // Load watched items and alerts
+        Set<Integer> watchedItems = storageService.getWatchedItems();
+        watchedItems.forEach(this::trackItem);
+        
+        List<PriceAlert> alerts = storageService.getAlerts();
+        alerts.forEach(alert -> 
+            priceAlerts.computeIfAbsent(alert.getItemId(), k -> new ArrayList<>())
+                .add(alert));
         
         startMonitoring();
     }
@@ -94,14 +106,7 @@ public class PriceMonitorService {
     }
     
     private void updatePriceHistory(int itemId, PriceData price) {
-        priceHistory.computeIfAbsent(itemId, k -> new ArrayList<>())
-            .add(price);
-            
-        // Keep only last 100 price points
-        List<PriceData> history = priceHistory.get(itemId);
-        if (history.size() > 100) {
-            history.remove(0);
-        }
+        storageService.savePriceData(itemId, price);
     }
     
     public void trackItem(int itemId) {
@@ -114,6 +119,11 @@ public class PriceMonitorService {
             PriceData price = priceService.getPrice(itemId);
             lastPrices.put(itemId, price);
             updatePriceHistory(itemId, price);
+            
+            // Update watched items in storage
+            Set<Integer> watchedItems = storageService.getWatchedItems();
+            watchedItems.add(itemId);
+            storageService.saveWatchedItems(watchedItems);
         } catch (Exception e) {
             log.error("Error tracking item {}", itemId, e);
         }
@@ -121,19 +131,31 @@ public class PriceMonitorService {
     
     public void untrackItem(int itemId) {
         lastPrices.remove(itemId);
-        priceHistory.remove(itemId);
         priceAlerts.remove(itemId);
+        
+        // Update watched items in storage
+        Set<Integer> watchedItems = storageService.getWatchedItems();
+        watchedItems.remove(itemId);
+        storageService.saveWatchedItems(watchedItems);
     }
     
     public void addAlert(PriceAlert alert) {
         priceAlerts.computeIfAbsent(alert.getItemId(), k -> new ArrayList<>())
             .add(alert);
+            
+        // Update alerts in storage
+        List<PriceAlert> allAlerts = new ArrayList<>();
+        priceAlerts.values().forEach(allAlerts::addAll);
+        storageService.saveAlerts(allAlerts);
     }
     
     public void removeAlert(PriceAlert alert) {
         List<PriceAlert> alerts = priceAlerts.get(alert.getItemId());
-        if (alerts != null) {
-            alerts.remove(alert);
+        if (alerts != null && alerts.remove(alert)) {
+            // Update alerts in storage
+            List<PriceAlert> allAlerts = new ArrayList<>();
+            priceAlerts.values().forEach(allAlerts::addAll);
+            storageService.saveAlerts(allAlerts);
         }
     }
     
@@ -189,7 +211,7 @@ public class PriceMonitorService {
     }
     
     public List<PriceData> getPriceHistory(int itemId) {
-        return priceHistory.get(itemId);
+        return storageService.getPriceHistory(itemId);
     }
     
     public void updateAllItems() {
