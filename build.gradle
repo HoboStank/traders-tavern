@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'checkstyle'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'com.traderstavern'
@@ -38,4 +40,40 @@ test {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
     options.release = 11
+}
+
+tasks.withType(Jar) {
+    manifest {
+        attributes 'Main-Class': 'com.traderstavern.plugin.TradersTavernPlugin'
+    }
+}
+
+shadowJar {
+    archiveClassifier.set('')
+    dependencies {
+        exclude(dependency('net.runelite:client'))
+    }
+}
+
+tasks.build.dependsOn tasks.shadowJar
+
+// RuneLite plugin properties
+ext {
+    runeLiteVersion = '1.10.13'
+    pluginName = 'Traders Tavern'
+    pluginDescription = 'Advanced OSRS trading analysis and flip suggestions'
+    pluginTags = ['trading', 'flipping', 'grand exchange', 'market']
+    pluginClass = 'com.traderstavern.plugin.TradersTavernPlugin'
+}
+
+// Development run configuration
+task run(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'net.runelite.client.RuneLite'
+    args = ['--developer-mode']
+    jvmArgs = [
+        '-ea',
+        '-Xmx512m',
+        '-Drunelite.pluginhub.version=' + runeLiteVersion
+    ]
 }
