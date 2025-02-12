@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,9 @@ import java.util.List;
 @Slf4j
 @Singleton
 public class DatabaseManager {
-    private static final String DB_URL = "jdbc:sqlite:traderstavern.db";
+    private static final String DB_NAME = "traderstavern.db";
+    private static final String DB_DIR = System.getProperty("user.home") + "/.runelite/traderstavern";
+    private static final String DB_URL = "jdbc:sqlite:" + DB_DIR + "/" + DB_NAME;
     private Connection connection;
     
     @Inject
@@ -22,11 +25,28 @@ public class DatabaseManager {
     
     private void initializeDatabase() {
         try {
+            // Create database directory if it doesn't exist
+            File dbDir = new File(DB_DIR);
+            if (!dbDir.exists()) {
+                dbDir.mkdirs();
+            }
+            
+            // Initialize database connection
             connection = DriverManager.getConnection(DB_URL);
+            connection.setAutoCommit(false); // Enable transactions for better performance
+            
             createTables();
+            connection.commit();
             log.info("Database initialized successfully");
         } catch (SQLException e) {
             log.error("Failed to initialize database", e);
+            try {
+                if (connection != null) {
+                    connection.rollback();
+                }
+            } catch (SQLException re) {
+                log.error("Failed to rollback database initialization", re);
+            }
         }
     }
     
@@ -63,8 +83,14 @@ public class DatabaseManager {
             pstmt.setLong(4, price.getHighTimestamp());
             pstmt.setLong(5, price.getLowTimestamp());
             pstmt.executeUpdate();
+            connection.commit();
         } catch (SQLException e) {
             log.error("Failed to save price data for item {}", itemId, e);
+            try {
+                connection.rollback();
+            } catch (SQLException re) {
+                log.error("Failed to rollback price data save", re);
+            }
         }
     }
     
