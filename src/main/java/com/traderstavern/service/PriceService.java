@@ -10,7 +10,9 @@ import net.runelite.client.game.ItemManager;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.awt.image.BufferedImage;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -65,5 +67,13 @@ public class PriceService {
     private PriceData fetchPrice(int itemId) {
         String url = String.format("%s?id=%d", BASE_URL, itemId);
         return apiClient.executeRequest(url, PriceData.class);
+    }
+    
+    public String getItemName(int itemId) {
+        return itemManager.getItemComposition(itemId).getName();
+    }
+    
+    public BufferedImage getItemImage(int itemId) {
+        return itemManager.getImage(itemId);
     }
 }
