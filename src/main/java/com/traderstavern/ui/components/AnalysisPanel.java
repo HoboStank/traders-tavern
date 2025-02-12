@@ -17,7 +17,8 @@ public class AnalysisPanel extends BasePanel {
     
     private final JComboBox<TradersTavernConfig.RiskLevel> riskSelector;
     private final JComboBox<TradersTavernConfig.TimeFrame> timeFrameSelector;
-    private final JPanel resultsPanel;
+    private final ChartPanel chartPanel;
+    private final TechnicalOverlayPanel overlayPanel;
     
     @Inject
     public AnalysisPanel(TradersTavernConfig config, AnalysisService analysisService) {
@@ -50,16 +51,23 @@ public class AnalysisPanel extends BasePanel {
         selectorsPanel.add(createLabel("Time Frame:"));
         selectorsPanel.add(timeFrameSelector);
         
-        // Create results panel
-        resultsPanel = createContentPanel();
+        // Create chart and overlay panels
+        chartPanel = new ChartPanel();
+        overlayPanel = new TechnicalOverlayPanel();
+        
+        // Create main content panel
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BorderLayout());
+        contentPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+        contentPanel.add(chartPanel, BorderLayout.CENTER);
+        contentPanel.add(overlayPanel, BorderLayout.EAST);
         
         // Add panels
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setLayout(new BorderLayout());
         mainPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-        mainPanel.add(selectorsPanel);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, CONTENT_PADDING)));
-        mainPanel.add(resultsPanel);
+        mainPanel.add(selectorsPanel, BorderLayout.NORTH);
+        mainPanel.add(contentPanel, BorderLayout.CENTER);
         
         add(mainPanel, BorderLayout.CENTER);
     }
@@ -83,10 +91,12 @@ public class AnalysisPanel extends BasePanel {
             riskSelector.setSelectedItem(config.riskLevel());
             timeFrameSelector.setSelectedItem(config.timeFrame());
             
-            resultsPanel.removeAll();
-            // Add analysis results here
-            resultsPanel.revalidate();
-            resultsPanel.repaint();
+            // Update chart and overlay panels
+            chartPanel.refresh();
+            overlayPanel.refresh();
+            
+            revalidate();
+            repaint();
         });
     }
 }
